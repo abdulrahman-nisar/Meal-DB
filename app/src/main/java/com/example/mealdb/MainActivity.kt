@@ -41,82 +41,9 @@ class MainActivity : ComponentActivity() {
             MealDbTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MealDbApp(padding = innerPadding)
-
                 }
             }
         }
     }
 }
 
-@Composable
-fun MealDbApp(padding: PaddingValues, viewModel: MainViewModel = viewModel()) {
-    val viewState by viewModel.categoriesState
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-    ) {
-        when {
-            viewState.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-            }
-
-            viewState.error != null -> {
-                Text(viewState.error!!)
-            }
-
-            else -> {
-                CategoryScreen(categories = viewState.categories)
-            }
-
-        }
-
-    }
-
-
-}
-
-@Composable
-fun CategoryScreen(categories: List<Category>) {
-    LazyVerticalGrid(
-        GridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        items(categories) {
-            CategoryItem(category = it)
-        }
-    }
-
-}
-
-@Composable
-fun CategoryItem(category: Category) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-                painter = rememberAsyncImagePainter(category.strCategoryThumb),
-                contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .aspectRatio(1f)
-        )
-
-        Text(
-            text = category.strCategory,
-            color = Color.Black,
-            style = TextStyle(
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier
-                .padding(top = 4.dp)
-        )
-    }
-
-}
